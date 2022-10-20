@@ -59,6 +59,10 @@ public class BFrontController extends HttpServlet {
 			
 			command = new BWriteCommand();
 			command.execute(request, response);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/list.do"); //다시한번 글들을 가져와서 리스트 객체에 셋팅
+			dispatcher.forward(request, response);
+			
 		}   else if (comm.equals("/list.do")){
 			System.out.println("list.do 요청");
 			
