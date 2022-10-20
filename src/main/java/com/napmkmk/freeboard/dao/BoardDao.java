@@ -119,6 +119,8 @@ public class BoardDao {
 	/*특정글 내용 가져오기*/
 public BoardDto content_view(String boardNum) { 
 		
+		upHit(boardNum); //보드 넘버를 넣어 호출을 하면 
+	
 		String sql = "SELECT * FROM freeboard WHERE bid=?";
 		
 		Connection conn = null;
@@ -173,7 +175,117 @@ public BoardDto content_view(String boardNum) {
 	}
 /*특정번호 글의 내용 수정하기*/
 	public void modify(String bname, String btitle, String bcontent, String bid) {
-		String sql = "UPDATE * FROM freeboard WHERE bid=?";
-	};
-	
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String sql ="UPDATE freeboard SET bname=?, btitle=?, bcontent=? WHERE bid=?";
+		
+		try {
+			Class.forName(driverName); // jdbc 드라이버 로딩
+			conn = DriverManager.getConnection(url, user, pass);//DB 연동 커넥션 생성
+			pstmt = conn.prepareStatement(sql);//sql 객체 생성
+			pstmt.setString(1,bname);
+			pstmt.setString(2,btitle);
+			pstmt.setString(3,bcontent);
+			pstmt.setString(4,bid);
+			
+			pstmt.executeUpdate();//sql 실행
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn !=null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	/*특정번호 글의 내용 삭제하기*/
+	public void delete(String bid) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String sql ="DELETE FROM freeboard WHERE bid=?";
+
+		
+		try {
+			Class.forName(driverName);
+			conn = DriverManager.getConnection(url, user, pass);
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1,bid);//sql 객체 생성
+			pstmt.executeUpdate();//sql 실행하는 함수
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) {				
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	/*조회수 1씩 증가*/
+	 private void upHit(String bid) {
+		
+		 
+		 String sql ="UPDATE freeboard SET bhit=bhit+1 WHERE bid=?"; // 위에 sql 문 조회수 +1 씩 올리는코드
+		 
+		 Connection conn = null;
+		 PreparedStatement pstmt = null;
+		 
+		 try {
+				Class.forName(driverName);
+				conn = DriverManager.getConnection(url, user, pass);
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1,bid);//sql 객체 생성
+				pstmt.executeUpdate();//sql 실행하는 함수
+				
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					if(pstmt != null) {				
+						pstmt.close();
+					}
+					if(conn != null) {
+						conn.close();
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+	  }
 }
+
+
+	

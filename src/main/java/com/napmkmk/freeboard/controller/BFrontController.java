@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.napmkmk.freeboard.command.BCommand;
 import com.napmkmk.freeboard.command.BContentCommand;
+import com.napmkmk.freeboard.command.BDeleteCommand;
 import com.napmkmk.freeboard.command.BListCommand;
+import com.napmkmk.freeboard.command.BModifyCommand;
 import com.napmkmk.freeboard.command.BWriteCommand;
 
 /**
@@ -55,50 +57,88 @@ public class BFrontController extends HttpServlet {
 		
 		BCommand command = null;
 		
+		String view = null; 
+		
 		if(comm.equals("/write.do")) {			
 			System.out.println("write.do 요청!");
 			
 			command = new BWriteCommand();
 			command.execute(request, response);
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/list.do");//다시한번 글들을 가져와서 리스트 객체에 셋팅
-			dispatcher.forward(request, response);
+			view="/list.do";
+			
+//			RequestDispatcher dispatcher = request.getRequestDispatcher("/list.do");//다시한번 글들을 가져와서 리스트 객체에 셋팅
+//			dispatcher.forward(request, response);
 			
 		}  else if(comm.equals("/list.do")) {
 			System.out.println("list.do 요청!");
 			
-
+			
 			
 			
 			command = new BListCommand();
 			command.execute(request, response);
+			
+			view="/list.jsp";
 			// request객체에 글 리스트가 셋팅됨
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/list.jsp");
-			dispatcher.forward(request, response);
+//			RequestDispatcher dispatcher = request.getRequestDispatcher("/list.jsp");
+//			dispatcher.forward(request, response);
 		} else if(comm.equals("/write_form.do")) {
 			System.out.println("write_form.do 요청!");
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/write_form.jsp");//jsp파일에 전부 보내주는것.
-			dispatcher.forward(request, response);
+			view="/write_form.jsp";
+			
+//			RequestDispatcher dispatcher = request.getRequestDispatcher("/write_form.jsp");//jsp파일에 전부 보내주는것.
+//			dispatcher.forward(request, response);
 		} else if(comm.equals("/content_view.do")) {
 			System.out.println("content_view.do 요청!");
 			
 			command = new BContentCommand();
 			command.execute(request, response);
-			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/content_view.jsp");//jsp파일에 전부 보내주는것.
-			dispatcher.forward(request, response);
+			view="/content_view.jsp";
+//			RequestDispatcher dispatcher = request.getRequestDispatcher("/content_view.jsp");//jsp파일에 전부 보내주는것.
+//			dispatcher.forward(request, response);
 		} else if(comm.equals("/content_modify.do")) {
 			System.out.println("content_modify.do 요청!");
-			
 			
 			command = new BContentCommand();
 			command.execute(request, response);
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/content_modify.jsp");//jsp파일에 전부 보내주는것.
-			dispatcher.forward(request, response);
+			view="/content_modify.jsp";
+			
+//			RequestDispatcher dispatcher = request.getRequestDispatcher("/content_modify.jsp");//jsp파일에 전부 보내주는것.
+//			dispatcher.forward(request, response);
+			
+		} else if(comm.equals("/modify.do")) {
+			System.out.println("modify.do 요청!");
+			
+			
+			command = new BModifyCommand();
+			command.execute(request, response);
+			
+			view="/list.do";
+			
+//			RequestDispatcher dispatcher = request.getRequestDispatcher("/list.do");//jsp파일에 전부 보내주는것.
+//			dispatcher.forward(request, response);
+			
+		}else if(comm.equals("/delete.do")) {
+			System.out.println("delete.do 요청!");
+			
+			
+			command = new BDeleteCommand();
+			command.execute(request, response);
+			view="/list.do";
+			
+//			RequestDispatcher dispatcher = request.getRequestDispatcher("/list.do");//jsp파일에 전부 보내주는것.
+//			dispatcher.forward(request, response);
+//			
+		
+		
 		}
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher(view);//jsp파일에 전부 보내주는것.
+		dispatcher.forward(request, response);
 		
 	}
 	

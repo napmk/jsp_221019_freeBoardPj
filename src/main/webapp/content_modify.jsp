@@ -11,13 +11,14 @@
 	<hr>
 	<table width="600" border="1" cellpadding="0" cellspacing="0">
 	<form action="modify.do">
+	<input type="hidden" name="bid" value="${content.bid }"><!-- 화면에 나오지 않으면 type를 hidden으로 처리해서 리퀘스트 객체에 저장하여 다같이 감 -->
 		<tr>
 			<th align="center" bgcolor="#D4F4FA">제 목</th>
-			<td><input type="text" value="${content.btitle }" size="80"></td>			
+			<td><input type="text" value="${content.btitle }" size="80" name="btitle"></td>			
 		</tr>
 		<tr>
 			<th align="center" bgcolor="#D4F4FA">글쓴이</th>
-			<td><input type="text" value="${content.bname }" size="80"></td>
+			<td><input type="text" value="${content.bname }" size="80" name="bname"></td>
 		</tr>		
 		<tr>
 			<th align="center" bgcolor="#D4F4FA">등록일</th>
@@ -30,7 +31,7 @@
 		<tr height="200">
 			<th valign="top" align="center" bgcolor="#D4F4FA">내 용</th>
 			<td valign="top">
-				<textarea rows="12" cols="60">${content.bcontent }</textarea>
+				<textarea rows="12" cols="60" name="bcontent">>${content.bcontent }</textarea>
 			</td>			
 		</tr>
 		<tr>
