@@ -54,12 +54,10 @@ public class BoardDao {
 	/*리스트 만드는 함수*/
 	public ArrayList<BoardDto> list() { // 매게변수가 없다. ArrayList 부를때 임포트 해야함.
 		
-		String sql ="SELECT * FROM freeboard"; // 조건이 없으므로 freeboard 에 있는 정보를 모두 가져와라.
+		String sql ="SELECT * FROM freeboard ORDER BY bid DESC"; // 조건이 없으므로 freeboard 에 있는 정보를 모두 가져와라. ORDER BY DESC는 오름차순
 		
 		/*리스트 생성*/
 		ArrayList<BoardDto> dtos = new ArrayList<BoardDto>();
-		
-		
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -99,6 +97,9 @@ public class BoardDao {
 				e.printStackTrace();
 			} finally {
 				try {
+					if(rs !=null) {
+						rs.close();
+					}
 					if(pstmt != null) {
 						pstmt.close();
 					}
@@ -114,4 +115,65 @@ public class BoardDao {
 		return dtos; // 여기 중요함
 		
 	}
+	
+	/*특정글 내용 가져오기*/
+public BoardDto content_view(String boardNum) { 
+		
+		String sql = "SELECT * FROM freeboard WHERE bid=?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;//select 문이 반환하는 데이터를 담는 객체 선언
+		BoardDto dto = null;
+		
+		try {
+			Class.forName(driverName); // jdbc 드라이버 로딩
+			conn = DriverManager.getConnection(url, user, pass);//DB 연동 커넥션 생성
+			pstmt = conn.prepareStatement(sql);//sql 객체 생성
+			pstmt.setString(1, boardNum);
+			
+			rs = pstmt.executeQuery();//sql 실행
+			
+			if(rs.next()) {
+				int bid = rs.getInt("bid");
+				String bname = rs.getString("bname");
+				String btitle = rs.getString("btitle");
+				String bcontent = rs.getString("bcontent");
+				String bdate = rs.getString("bdate");
+				int bhit = rs.getInt("bhit");
+				
+				dto = new BoardDto(bid, bname, btitle, bcontent, bdate, bhit);							
+			}
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}	
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn !=null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return dto;
+	}
+/*특정번호 글의 내용 수정하기*/
+	public void modify(String bname, String btitle, String bcontent, String bid) {
+		String sql = "UPDATE * FROM freeboard WHERE bid=?";
+	};
+	
 }

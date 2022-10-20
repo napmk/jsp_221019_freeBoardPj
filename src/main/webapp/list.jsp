@@ -19,16 +19,21 @@
 			<th>조회수</th>
 		</tr>
 		
-		<c:forEach items="${list}" var="dto"><!--jstl 반복분시작 items로  request 객체에 있는 리스트를 불러온다.-->
+		<c:forEach items="${list}" var="dto">
 		<tr>
-			<td>${dto.bid}</td>
-			<td>${dto.btitle}</td>
-			<td>${dto.bname}</td>
-			<td>${dto.bdate}</td>
-			<td>${dto.bhit}</td>
+			<td>${dto.bid }</td>
+			<td><a href="content_view.do?bid=${dto.bid }">${dto.btitle }</a></td>
+			<td>${dto.bname }</td>
+			<td>${dto.bdate }</td>
+			<td>${dto.bhit }</td>
 		</tr>
 		</c:forEach>
-	
+		<tr>
+			<td colspan="5" align="right">
+				<input type="button" value="글쓰기" onclick="javascript:window.location='write_form.do'">
+			</td>
+		</tr>
+		
 	</table>
 </body>
 </html>

@@ -13,7 +13,7 @@ public class BListCommand implements BCommand {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse repResponse) {
 		// TODO Auto-generated method stub
-		BoardDao dao = dao = new BoardDao();
+		BoardDao dao =  new BoardDao();
 		
 		ArrayList<BoardDto> dtos = dao.list(); //리스트실행 리스트 받으면
 		//dto들의 컬렌션인 dto(ArrayList타입)가 반환됨
